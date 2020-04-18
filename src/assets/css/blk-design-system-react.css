@@ -12531,6 +12531,12 @@ button:focus {
 .vis-container {
   padding: 9px; }
 
+.landing-page {
+  overflow: hidden; }
+
+.profile-page {
+  overflow: auto; }
+
 .progress-container {
   position: relative; }
   .progress-container.progress-sm {

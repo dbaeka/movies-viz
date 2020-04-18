@@ -27,23 +27,24 @@ import Index from "views/Index.js";
 import LandingPage from "views/examples/LandingPage.js";
 import RegisterPage from "views/examples/RegisterPage.js";
 import ProfilePage from "views/examples/ProfilePage.js";
+import WriteUp from "./views/examples/WriteUp";
 
 ReactDOM.render(
   <BrowserRouter>
     <Switch>
-      <Route path="/components" render={props => <Index {...props} />} />
+      <Route path="/writeup" render={props => <WriteUp {...props} />} />
       <Route
         path="/"
         render={props => <LandingPage {...props} />}
       />
-      <Route
-        path="/register-page"
-        render={props => <RegisterPage {...props} />}
-      />
-      <Route
-        path="/profile-page"
-        render={props => <ProfilePage {...props} />}
-      />
+      {/*<Route*/}
+      {/*  path="/write-up"*/}
+      {/*  render={props => <WriteUp {...props} />}*/}
+      {/*/>*/}
+      {/*<Route*/}
+      {/*  path="/profile-page"*/}
+      {/*  render={props => <ProfilePage {...props} />}*/}
+      {/*/>*/}
       {/*<Redirect from="/" to="/components" />*/}
     </Switch>
   </BrowserRouter>,

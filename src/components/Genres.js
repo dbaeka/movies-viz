@@ -23,7 +23,7 @@ import WebWorker from "../workers/webWorker";
 import Store from "../flux/store";
 import {Actions} from "../flux";
 
-class Gallery extends React.Component {
+class Genres extends React.Component {
     constructor(props) {
         super(props);
 
@@ -31,6 +31,10 @@ class Gallery extends React.Component {
             pageNum: Store.getNumPages(),
             path: ""
         };
+
+        this.genres = ["Comedy", "Crime", "Drama", "Romance", "Thriller", "Sci-Fi", "Action", "Animation", "Family",
+            "Biography", "Adventure", "Fantasy", "Horror", "Western", "Documentary"
+        ];
 
         this.drawPath = this.drawPath.bind(this);
         this.onChange = this.onChange.bind(this);
@@ -96,7 +100,7 @@ class Gallery extends React.Component {
                     filteredData = filteredData.reverse();
                 }
 
-                if (typeof bounds.start !== "number"){
+                if (typeof bounds.start !== "number") {
                     bounds.start = Number(bounds.start.replace(/[^0-9.-]+/g, ""));
                     bounds.end = Number(bounds.end.replace(/[^0-9.-]+/g, ""));
                 }
@@ -143,31 +147,35 @@ class Gallery extends React.Component {
     render() {
         return (
             <>
-                <div
-                    className="vis-container"
-                    // style={{width: `${this.props.width}`, height: `${this.props.height}`}}
-                    dangerouslySetInnerHTML={{__html: this.state.path}}
-                >
+                <div className="">
+                    <div className="section-title line"><h2
+                    >Genres</h2>
+                        <div className="subtitle-box">
+                            <img src={require("assets/img/svg/click.svg")}
+                                 className="click-icon"/>
+                            <h3>Click to select one or more genres</h3>
+                        </div>
+                    </div>
+                    <div className="macrocategories">
+                        <button
+                            className="macro-button inactive">
+                            <div className="macro-background"></div>
+                            <div className="macro-bar"
+                                 style={{
+                                     width: "13%",
+                                     background: "rgb(89, 205, 144)",
+                                     opacity: "0.8"
+                                 }}>
+                            </div>
+                            <div className="macro-labels"><h3
+                            >Action</h3><h3
+                            >142 Occurrences</h3></div>
+                        </button>
+                    </div>
                 </div>
-                <ReactTooltip
-                    id="posterTooltip"
-                    getContent={(dataTip) => {
-                        const data = JSON.parse(decodeURI(dataTip));
-                        if (data === null)
-                            return;
-                        const {image, title, score, year} = data;
-                        let formatter = new Intl.NumberFormat('en', {minimumFractionDigits: 0});
-                        return (<div>
-                            <img src={image} height="180"/>
-                            <p className="m-2 font-weight-bold"><strong>{title}</strong></p>
-                            <p>Score: {score} Year: {formatter.format(year).replace(/,\s?/g, "")}</p>
-                        </div>)
-                    }
-                    }
-                />
             </>
         );
     }
 }
 
-export default Gallery;
+export default Genres;

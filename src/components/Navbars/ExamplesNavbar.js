@@ -180,7 +180,12 @@ class PagesNavbar extends React.Component {
               {/*</NavItem>*/}
               <NavItem>
                 <NavLink tag={Link} to="/">
-                  Go to Write-Up
+                  Home
+                </NavLink>
+              </NavItem>
+              <NavItem>
+                <NavLink tag={Link} to="/writeup">
+                  Write-Up
                 </NavLink>
               </NavItem>
               {/*<NavItem>*/}

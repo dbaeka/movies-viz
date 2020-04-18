@@ -13,6 +13,7 @@ import ExamplesNavbar from "../../components/Navbars/ExamplesNavbar.js";
 import Gallery from "../../components/Gallery";
 import FIlterSlider from "../../components/FIlterSlider";
 import ReactTooltip from 'react-tooltip';
+import Genres from "../../components/Genres";
 
 // import FIlterSlider from "../../components/FIlterSlider";
 
@@ -251,32 +252,7 @@ class LandingPage extends React.Component {
                             </div>
                             <div className="page-side-filters">
                                 <div>
-                                    <div className="">
-                                        <div className="section-title line"><h2
-                                        >Genres</h2>
-                                            <div className="subtitle-box">
-                                                <img src={require("assets/img/svg/click.svg")}
-                                                     className="click-icon"/>
-                                                <h3>Click to select one or more genres</h3>
-                                            </div>
-                                        </div>
-                                        <div className="macrocategories">
-                                            <button
-                                                className="macro-button geometria_e_algebra inactive">
-                                                <div className="macro-background"></div>
-                                                <div className="macro-bar"
-                                                     style={{
-                                                         width: "13%",
-                                                         background: "rgb(89, 205, 144)",
-                                                         opacity: "0.8"
-                                                     }}>
-                                                </div>
-                                                <div className="macro-labels"><h3
-                                                >Action</h3><h3
-                                                >142 Occurrences</h3></div>
-                                            </button>
-                                        </div>
-                                    </div>
+                                    {/*<Genres/>*/}
                                 </div>
                             </div>
                         </div>
