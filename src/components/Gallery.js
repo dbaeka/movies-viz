@@ -51,14 +51,11 @@ class Gallery extends React.Component {
     }
 
     onChange() {
-        let newValue = Store.getNumPages();
-        if (newValue !== this.state.pageNum) {
-            this.drawPath();
-        }
         this.setState({
             ...this.state,
-            pageNum: newValue,
+            pageNum: Store.getNumPages(),
         });
+        this.drawPath();
     }
 
     getData = () => {
@@ -73,6 +70,7 @@ class Gallery extends React.Component {
 
 
     drawPath = () => {
+
         this.getData()
             .then(data => { // renders the data table
                 const keys = Object.keys(data[0]);
@@ -84,10 +82,28 @@ class Gallery extends React.Component {
                 const title = keys[FIELDS.TITLES];
                 const year = keys[FIELDS.YEAR];
                 const score = keys[FIELDS.SCORE];
+                const gross = keys[FIELDS.GROSS];
+
+                const category = (Store.getFilterIndex() === "0") ? year : gross;
+                const order = Store.getSortOrder() === 0;
+                let bounds = Store.getSliderValue();
 
                 let filteredData = data
-                    .filter(k => k[poster] !== "");
-                //  .sort((e, f) => e[gross] - f[gross]);
+                    .filter(k => k[poster] !== "" && k[gross] !== "" && k[year] !== "")
+                    .sort((e, f) => e[category] - f[category]);
+
+                if (!order) {
+                    filteredData = filteredData.reverse();
+                }
+
+                if (typeof bounds.start !== "number"){
+                    bounds.start = Number(bounds.start.replace(/[^0-9.-]+/g, ""));
+                    bounds.end = Number(bounds.end.replace(/[^0-9.-]+/g, ""));
+                }
+                
+                filteredData = filteredData
+                    .filter(k => k[category] > bounds.start && k[category] < bounds.end);
+
 
                 // set the dimensions and margins of the graph
                 const margin = 5;

@@ -146,37 +146,10 @@ class Store extends EventEmitter {
         return _store.maxPoster
     }
 
-    getResourceTableData() {
-        return _store.resources;
+    getSortOrder() {
+        return _store.sortOrder;
     }
 
-    getHostStats() {
-        return _store.hostStats;
-    }
-
-    getUserDetails() {
-        return _store.user;
-    }
-
-    getVMTableData() {
-        return _store.vms;
-    }
-
-    getDetailedResourceTableData() {
-        return _store.resourceDetails;
-    }
-
-    getTemplatesTableData() {
-        return _store.templates;
-    }
-
-    getPoliciesTableData() {
-        return _store.policies;
-    }
-
-    getOverviewData() {
-        return _store.overview;
-    }
 }
 
 export default new Store();
