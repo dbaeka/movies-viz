@@ -12411,7 +12411,7 @@ button:focus {
 .noUi-tooltip {
   display: block;
   position: absolute;
-  font-size: 9px;
+  font-size: 8px;
   border: none !important;
   background: transparent !important;
   color: #fff !important;
@@ -12527,6 +12527,9 @@ button:focus {
 .filter-container {
   position: absolute;
   top: 0; }
+
+.vis-container {
+  padding: 9px; }
 
 .progress-container {
   position: relative; }

@@ -11,6 +11,7 @@ import wNumb from "wnumb";
 import ExamplesNavbar from "../../components/Navbars/ExamplesNavbar.js";
 import Gallery from "../../components/Gallery";
 import FIlterSlider from "../../components/FIlterSlider";
+import ReactTooltip from 'react-tooltip';
 
 // import FIlterSlider from "../../components/FIlterSlider";
 
