@@ -20,26 +20,45 @@ import ReactTooltip from 'react-tooltip';
 import {LazyLoadImage} from 'react-lazy-load-image-component';
 import worker from '../workers/image-worker'
 import WebWorker from "../workers/webWorker";
+import Store from "../flux/store";
+import {Actions} from "../flux";
 
 class Gallery extends React.Component {
     constructor(props) {
         super(props);
 
-        this.state = {path: ""};
+        this.state = {
+            pageNum: Store.getNumPages(),
+            path: ""
+        };
 
         this.drawPath = this.drawPath.bind(this);
+        this.onChange = this.onChange.bind(this);
+    }
+
+    componentWillMount() {
+        Store.addChangeListener(this.onChange);
     }
 
     componentDidMount() {
         this.drawPath();
         window.addEventListener('resize', this.drawPath);
-
-        // this.worker = new WebWorker(worker);
-        // this.worker.postMessage('Hello world!')
     }
 
     componentWillUnmount() {
         window.removeEventListener('resize', this.drawPath);
+        Store.removeChangeListener(this.onChange);
+    }
+
+    onChange() {
+        let newValue = Store.getNumPages();
+        if (newValue !== this.state.pageNum) {
+            this.drawPath();
+        }
+        this.setState({
+            ...this.state,
+            pageNum: newValue,
+        });
     }
 
     getData = () => {
@@ -54,15 +73,6 @@ class Gallery extends React.Component {
 
 
     drawPath = () => {
-        var toDataURL = url => fetch(url)
-            .then(response => response.blob())
-            .then(blob => new Promise((resolve, reject) => {
-                const reader = new FileReader()
-                reader.onloadend = () => resolve(reader.result);
-                reader.onerror = reject
-                reader.readAsDataURL(blob)
-            }));
-
         this.getData()
             .then(data => { // renders the data table
                 const keys = Object.keys(data[0]);
@@ -76,7 +86,7 @@ class Gallery extends React.Component {
                 const score = keys[FIELDS.SCORE];
 
                 let filteredData = data
-                    .filter(k => k[poster] !== "")
+                    .filter(k => k[poster] !== "");
                 //  .sort((e, f) => e[gross] - f[gross]);
 
                 // set the dimensions and margins of the graph
@@ -88,13 +98,13 @@ class Gallery extends React.Component {
 
                 height -= 140;
 
-                const numRects = 100;
+                const numRects = parseInt(this.state.pageNum);
                 const rectWidth = 1;
                 const rectHeight = 1.467;
                 const result = scaler.largestRect(width, height, numRects, rectWidth, rectHeight);
 
                 let imgs = ``;
-                filteredData.slice(0, 100).forEach(img => {
+                filteredData.slice(0, numRects).forEach(img => {
                     let info = encodeURI(JSON.stringify({
                         image: img[poster],
                         year: img[year],
@@ -106,6 +116,7 @@ class Gallery extends React.Component {
                 // let res = `<g class="bars" transform="translate(${margin.left + 20},${margin.top})">${bars}</g>`;
 
                 this.setState({
+                    ...this.state,
                     path: imgs//res
                 });
                 ReactTooltip.rebuild();
@@ -133,7 +144,7 @@ class Gallery extends React.Component {
                         return (<div>
                             <img src={image} height="180"/>
                             <p className="m-2 font-weight-bold"><strong>{title}</strong></p>
-                            <p>Score: {score}  Year: {formatter.format(year).replace(/,\s?/g, "")}</p>
+                            <p>Score: {score} Year: {formatter.format(year).replace(/,\s?/g, "")}</p>
                         </div>)
                     }
                     }

@@ -13,6 +13,8 @@ import {
     Col,
     UncontrolledTooltip
 } from "reactstrap";
+import Store from "../flux/store";
+import {Actions} from "../flux";
 
 import * as d3 from "d3"
 import Slider from "nouislider";
@@ -22,19 +24,28 @@ class FIlterSlider extends React.Component {
     constructor(props) {
         super(props);
 
-        this.state = {path: ""};
+        this.state = {
+            path: "",
+            filterIndex: Store.getFilterIndex(),
+            sliderValue: Store.getSliderValue(),
+        };
 
         this.drawOrdinal = this.drawOrdinal.bind(this);
         this.drawContinusous = this.drawContinusous.bind(this);
+        this.reloadData = this.reloadData.bind(this);
+        this.onChange = this.onChange.bind(this);
     }
 
     componentDidMount() {
-        this.drawContinusous();
-        window.addEventListener('resize', this.drawContinusous);
+        const type = this.state.filterIndex;
+        let func = (type === "0") ? this.drawOrdinal() : this.drawContinusous();
+        window.addEventListener('resize', func);
+
+        this.props.setClick(this.reloadData);
 
         var slider1 = this.refs.slider1;
         Slider.create(slider1, {
-            start: [0, 0],
+            start: [this.state.sliderValue.start, this.state.sliderValue.end],
             connect: [false, true, false],
             tooltips: true,
             format: wNumb({
@@ -43,11 +54,38 @@ class FIlterSlider extends React.Component {
             step: 1,
             range: {min: 0, max: 100}
         });
+
+        slider1.noUiSlider.on('change', (e) => {
+            let val = {start: e[0], end: e[1]};
+            Actions.updateSliders(val);
+        });
+
+    }
+
+    componentWillMount() {
+        Store.addChangeListener(this.onChange);
     }
 
     componentWillUnmount() {
-        window.removeEventListener('resize', this.drawContinusous);
+        const type = this.state.filterIndex;
+        let func = (type === "0") ? this.drawOrdinal() : this.drawContinusous();
+        window.removeEventListener('resize', func);
+        Store.removeChangeListener(this.onChange);
     }
+
+    onChange() {
+        this.setState({
+            ...this.state,
+            filterIndex: Store.getFilterIndex(),
+            sliderValue: Store.getSliderValue(),
+        });
+        // this.reloadData()
+    }
+
+    reloadData = () => {
+        const type = Store.getFilterIndex();
+        (type === "0") ? this.drawOrdinal() : this.drawContinusous();
+    };
 
     getData = () => {
         // fetch data from the server
@@ -107,14 +145,18 @@ class FIlterSlider extends React.Component {
                     ])
                     .range([height, 0]);
 
-                let xmin = d3.min(groupByYear.map(d => d.key));
-                const xmax = d3.max(groupByYear.map(d => d.key));
+                const vals = {
+                    start: d3.min(groupByYear.map(d => d.key)),
+                    end: d3.max(groupByYear.map(d => d.key))
+                };
+
+                Actions.updateSliders(vals);
 
                 let slider = this.refs.slider1;
                 slider.noUiSlider.updateOptions({
-                    start: [xmin, xmax],
+                    start: [Store.getSliderValue().start, Store.getSliderValue().end],
                     step: 1,
-                    range: {min: parseInt(xmin), max: parseInt(xmax)},
+                    range: {min: parseInt(Store.getSliderValue().start), max: parseInt(Store.getSliderValue().end)},
                     format: wNumb({
                         decimals: 0,
                     }),
@@ -184,15 +226,20 @@ class FIlterSlider extends React.Component {
                     // Y axis: update now that we know the domain
                     yScale.domain([0, d3.max(bins, d => d.length)]);   // d3.hist has to be called before the Y axis obviously
 
-                    const xmin = bins[0].x0;
-                    const xmax = bins[bins.length - 1].x1;
                     const steps = bins[0].x1 - bins[0].x0;
+
+                    const vals = {
+                        start: bins[0].x0,
+                        end: bins[bins.length - 1].x1,
+                    };
+
+                    Actions.updateSliders(vals);
 
                     let slider = this.refs.slider1;
                     slider.noUiSlider.updateOptions({
-                        start: [xmin, xmax],
+                        start: [Store.getSliderValue().start, Store.getSliderValue().end],
                         step: steps,
-                        range: {min: parseInt(xmin), max: parseInt(xmax)},
+                        range: {min: parseInt(Store.getSliderValue().start), max: parseInt(Store.getSliderValue().end)},
                         format: wNumb({
                             decimals: 0,
                             thousand: ',',
