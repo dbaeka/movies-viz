@@ -151,7 +151,7 @@ class Genres extends React.Component {
                     <div className="section-title line"><h2
                     >Genres</h2>
                         <div className="subtitle-box">
-                            <img src={require("assets/img/svg/click.svg")}
+                            <img src={require("./../assets/img/svg/click.svg")}
                                  className="click-icon"/>
                             <h3>Click to select one or more genres</h3>
                         </div>

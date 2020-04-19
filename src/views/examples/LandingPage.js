@@ -199,7 +199,7 @@ class LandingPage extends React.Component {
                                                 <h2>Selection slider</h2>
                                                 <div className="subtitle-box">
                                                     <h3>Movies per selected category(</h3>
-                                                    <img src={require("assets/img/svg/drag.svg")}
+                                                    <img src={require("../../assets/img/svg/drag.svg")}
                                                          className="drag-icon"/>
                                                     <h3>drag to select interval)</h3>
                                                 </div>

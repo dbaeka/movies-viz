@@ -23,3 +23,5 @@ yarn-debug.log*
 yarn-error.log*
 a4-server/node_modules
 .idea
+public/bundle
+public/css

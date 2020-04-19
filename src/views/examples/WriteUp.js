@@ -27,8 +27,7 @@ import {
 } from "reactstrap";
 
 // core components
-import ExamplesNavbar from "components/Navbars/ExamplesNavbar.js";
-import Footer from "components/Footer/Footer.js";
+import ExamplesNavbar from "../../components/Navbars/ExamplesNavbar.js";
 
 class WriteUp extends React.Component {
     constructor(props) {
