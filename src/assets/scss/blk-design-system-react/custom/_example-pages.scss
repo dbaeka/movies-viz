@@ -1236,3 +1236,11 @@ button:focus {
 .profile-page {
   overflow: auto;
 }
+
+.writeup {
+  min-height: 100vh;
+  padding: 0;
+  color: #ffffff;
+  position: relative;
+  overflow: hidden;
+}
