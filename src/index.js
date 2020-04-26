@@ -17,6 +17,7 @@
 */
 import React from "react";
 import ReactDOM from "react-dom";
+import { createBrowserHistory } from 'history';
 import { BrowserRouter, Route, Switch, Redirect } from "react-router-dom";
 
 import "./assets/css/nucleo-icons.css";
@@ -50,3 +51,7 @@ ReactDOM.render(
   </BrowserRouter>,
   document.getElementById("root")
 );
+
+export const history = createBrowserHistory({
+    basename: process.env.PUBLIC_URL
+});

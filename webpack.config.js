@@ -13,7 +13,8 @@ let config = {
     },
     output: {
         path: path.resolve(__dirname, 'public', 'bundle'),
-        filename: '[name].bundle.js'
+        filename: '[name].bundle.js',
+        publicPath: "/movies-viz/"
     },
     resolve: {
         extensions: ['.js', '.jsx', '.json', '.ts', '.tsx']
@@ -58,7 +59,7 @@ let config = {
                     {
                         loader: 'file-loader',
                         options: {
-                            name: '../css/[hash].[ext]'
+                            name: 'css/[hash].[ext]'
                         }
                     }
                 ]
@@ -69,15 +70,8 @@ let config = {
             }
         ]
     },
-    externals: {
-        myApp: 'myApp',
-    },
     plugins: [
         new ExtractTextPlugin(path.join('..', 'css', 'app.css')),
-        new webpack.DefinePlugin({
-            '__DEV__' : JSON.stringify(true),
-            '__API_HOST__' : JSON.stringify('http://localhost/app/'),
-        }),
     ],
 
 };

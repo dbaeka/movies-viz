@@ -210,7 +210,7 @@ class LandingPage extends React.Component {
                                         <FIlterSlider height={this.state.filterHeight}
                                                       width={this.state.filterWidth}
                                                       setClick={click => this.updateFilter = click}
-                                                      src="http://localhost:8080/movies.csv"/>
+                                                      src="data/movies.csv"/>
                                     </div>
                                 </div>
                             </div>
@@ -248,7 +248,7 @@ class LandingPage extends React.Component {
                         <div className="page-main-content">
                             <div className="page-viz" ref="visContainer">
                                 <Gallery height={this.state.height} width={this.state.width}
-                                         src="http://localhost:8080/movies.csv"/>
+                                         src="data/movies.csv"/>
                             </div>
                             <div className="page-side-filters">
                                 <div>
